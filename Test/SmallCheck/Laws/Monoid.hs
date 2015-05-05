@@ -1,6 +1,5 @@
 module Test.SmallCheck.Laws.Monoid where
 
-import Control.Applicative (liftA3)
 import Data.Monoid ((<>))
 import Test.SmallCheck (Property, over)
 import Test.SmallCheck.Series ((>>-), Series, getDepth)
@@ -18,8 +17,11 @@ rightIdentity s = over s $ \x -> x <> mempty == x
 associativity
   :: (Eq a, Monad m, Show a, Monoid a)
   => Series m a -> Property m
-associativity s = over (liftA3 (,,) s s s) $ \(x,y,z) ->
-    x <> (y <> z) == (x <> y) <> z
+associativity s =
+    over s $ \x ->
+        over s $ \y ->
+            over s $ \z ->
+                x <> (y <> z) == (x <> y) <> z
 
 mconcatProp
   :: (Eq a, Monad m, Show a, Monoid a)

@@ -4,7 +4,7 @@ module Test.Tasty.SmallCheck.Laws.Functor where
 import Data.Functor.Identity (Identity)
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.SmallCheck (testProperty)
-import Test.SmallCheck.Series (Serial, CoSerial, Series)
+import Test.SmallCheck.Series (Serial, CoSerial(coseries), Series)
 
 import Test.SmallCheck.Laws.Functor
 
@@ -16,5 +16,5 @@ testFunctorLaws
   => Series IO (f a) -> TestTree
 testFunctorLaws s = testGroup "Functor laws"
   [ testProperty "fmap id == id" $ fmapIdentity s
-  , testProperty "fmap (f . g) == fmap f . fmap g" $ fmapCompose s
+  , testProperty "fmap (f . g) == fmap f . fmap g" $ fmapCompose s (coseries s) (coseries s)
   ]

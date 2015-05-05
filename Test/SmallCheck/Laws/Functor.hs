@@ -11,13 +11,13 @@ fmapIdentity
   => Series m (f a) -> Property m
 fmapIdentity s = over s $ \x -> fmap id x == x
 
--- TODO: This tends to combinatorial explosion too easily
 fmapCompose
-  :: ( Eq (f (f a)), Functor f, Show a, Show (f a)
-     , Serial Identity a , Serial Identity (f a)
-     , CoSerial m a , CoSerial m (f a)
+  :: ( Monad m, Functor f, Show a, Show b, Show c
+     , Show (f a), Eq (f c)
+     , Serial Identity a, Serial Identity b
      )
-  => Series m (f a) -> Property m
-fmapCompose s = over s' $ \(x,f,g) -> fmap (f . g) x == (fmap f . fmap g) x
-  where
-    s' = liftA3 (,,) s (coseries s) (coseries s)
+  => Series m (f a) -> Series m (b -> c) -> Series m (a -> b) -> Property m
+fmapCompose xs fs gs = over xs $ \x ->
+    over fs $ \f ->
+        over gs $ \g ->
+            fmap (f . g) x == (fmap f . fmap g) x
