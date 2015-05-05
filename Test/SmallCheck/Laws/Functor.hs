@@ -2,9 +2,8 @@
 module Test.SmallCheck.Laws.Functor where
 
 import Data.Functor.Identity (Identity)
-import Control.Applicative (liftA3)
 import Test.SmallCheck (Property, over)
-import Test.SmallCheck.Series (Serial, CoSerial, Series, coseries)
+import Test.SmallCheck.Series (Serial, Series)
 
 fmapIdentity
   :: (Eq (f a), Monad m, Show (f a), Functor f)
