@@ -1,6 +1,10 @@
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE FlexibleContexts #-}
 module Test.Tasty.SmallCheck.Laws.Monoid where
 
+#if !MIN_VERSION_base(4,8,0)
+import Data.Monoid (Monoid)
+#endif
 import Test.SmallCheck.Series (Serial, Series)
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.SmallCheck (testProperty)

@@ -1,5 +1,10 @@
+{-# LANGUAGE CPP #-}
 module Test.SmallCheck.Laws.Monoid where
 
+#if !MIN_VERSION_base(4,8,0)
+import Data.Monoid (Monoid, mappend, mempty, mconcat)
+import Data.Traversable (sequenceA)
+#endif
 import Data.Monoid ((<>))
 import Test.SmallCheck (Property, over)
 import Test.SmallCheck.Series ((>>-), Series, getDepth)
