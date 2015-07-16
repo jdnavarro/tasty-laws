@@ -7,7 +7,7 @@ import Data.Traversable (sequenceA)
 #endif
 import Data.Monoid ((<>))
 import Test.SmallCheck (Property, over)
-import Test.SmallCheck.Series ((>>-), Series, getDepth)
+import Test.SmallCheck.Series (Series)
 
 leftIdentity
   :: (Eq a, Monad m, Show a, Monoid a)
@@ -31,5 +31,5 @@ associativity s =
 mconcatProp
   :: (Eq a, Monad m, Show a, Monoid a)
   => Series m a -> Property m
-mconcatProp s = over (getDepth >>- \d -> sequenceA (replicate d s)) $ \l ->
+mconcatProp s = over (sequenceA $ replicate 3 s) $ \l ->
     mconcat l == foldr mappend mempty l
