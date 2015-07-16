@@ -1,0 +1,24 @@
+flags:
+  text:
+    integer-simple: false
+packages:
+- '.'
+extra-deps:
+- ansi-terminal-0.6.2.1
+- ansi-wl-pprint-0.6.7.2
+- async-2.0.2
+- logict-0.6.0.2
+- mtl-2.2.1
+- optparse-applicative-0.11.0.2
+- parsec-3.1.9
+- regex-base-0.93.2
+- regex-tdfa-rc-1.1.8.3
+- smallcheck-1.1.1
+- stm-2.4.4
+- tagged-0.8.1
+- tasty-0.10.1.2
+- tasty-smallcheck-0.8.0.1
+- text-1.2.1.1
+- transformers-compat-0.4.0.4
+- unbounded-delays-0.1.0.9
+resolver: ghc-7.10
