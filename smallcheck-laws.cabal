@@ -30,6 +30,7 @@ library
                        Test.Tasty.SmallCheck.Laws.Monoid
   build-depends:       base >=4.6 && <4.9,
                        smallcheck >=1.1.1,
+                       smallcheck-series >=0.3,
                        tasty >=0.10,
                        tasty-smallcheck >=0.8
   if impl(ghc < 7.10)

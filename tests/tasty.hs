@@ -9,12 +9,16 @@ import Control.Applicative ((<$>))
 import Data.Monoid (Sum(..), Product(..))
 
 import Test.SmallCheck.Series (Serial(series), Series)
-import Test.Tasty (defaultMain, testGroup)
+import Test.Tasty (TestTree, defaultMain, testGroup)
 
+import Test.Tasty.SmallCheck.Laws.Functor
 import Test.Tasty.SmallCheck.Laws.Monoid
 
 main :: IO ()
-main = defaultMain $ testGroup "Monoid"
+main = defaultMain $ testGroup "Laws" [monoidTests, functorTests]
+
+monoidTests :: TestTree
+monoidTests = testGroup "Monoid"
   [ testGroup "Sum"
     [ testGroup "Int"
       [ testMonoid $ Sum <$> (series :: Series IO Int) ]
@@ -30,5 +34,13 @@ main = defaultMain $ testGroup "Monoid"
       [ testMonoid $ Product <$> (series :: Series IO Integer) ]
     , testGroup "Float"
       [ testMonoid $ Product <$> (series :: Series IO Float) ]
+    ]
+  ]
+
+functorTests :: TestTree
+functorTests = testGroup "Functor"
+  [ testGroup "Maybe"
+    [ testFunctor (series :: Series IO (Maybe Int))
+    , testFunctor (series :: Series IO (Maybe Char))
     ]
   ]
