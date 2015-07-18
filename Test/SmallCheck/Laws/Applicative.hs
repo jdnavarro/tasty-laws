@@ -6,6 +6,7 @@ module Test.SmallCheck.Laws.Applicative where
 #if !MIN_VERSION_base(4,8,0)
 import Control.Applicative (Applicative, (<*>), pure)
 #endif
+import Data.Proxy (Proxy)
 import Data.Functor.Identity (Identity)
 import Test.SmallCheck (Property, over)
 import Test.SmallCheck.Series (Serial, Series)
@@ -32,16 +33,18 @@ composition vs ws us = over (zipLogic3 vs ws us) $ \(v,w,u) ->
     (pure (.) <*> u <*> v <*> w) == (u <*> (v <*> w))
 
 homomorphism
-  :: forall m a b .
+  :: forall m f a b .
      ( Monad m
+     , Applicative f
      , Eq b
+     , Eq (f b)
      , Show a, Show b
      , Serial Identity a
      , Serial Identity b
      )
-  => Series m a -> Series m (a -> b) -> Property m
-homomorphism xs fs = over (zipLogic xs fs) $ \(x,f) ->
-    (pure f <*> (pure x :: Maybe a)) == pure (f x)
+  => Proxy f -> Series m a -> Series m (a -> b) -> Property m
+homomorphism _ xs fs = over (zipLogic xs fs) $ \(x,f) ->
+    (pure f <*> (pure x :: f a)) == pure (f x)
 
 interchange
   :: ( Eq (f b)
