@@ -24,7 +24,8 @@ source-repository head
 library
   ghc-options:         -Wall
   default-language:    Haskell2010
-  exposed-modules:     Test.SmallCheck.Laws.Functor,
+  exposed-modules:     Test.SmallCheck.Laws.Applicative,
+                       Test.SmallCheck.Laws.Functor,
                        Test.SmallCheck.Laws.Monoid,
                        Test.Tasty.SmallCheck.Laws.Functor,
                        Test.Tasty.SmallCheck.Laws.Monoid
