@@ -27,6 +27,7 @@ library
   exposed-modules:     Test.SmallCheck.Laws.Applicative,
                        Test.SmallCheck.Laws.Functor,
                        Test.SmallCheck.Laws.Monoid,
+                       Test.Tasty.SmallCheck.Laws.Applicative,
                        Test.Tasty.SmallCheck.Laws.Functor,
                        Test.Tasty.SmallCheck.Laws.Monoid
   build-depends:       base >=4.6 && <4.9,

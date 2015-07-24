@@ -12,11 +12,12 @@ import Data.Proxy
 import Test.SmallCheck.Series (Serial(series), Series)
 import Test.Tasty (TestTree, defaultMain, testGroup)
 
+import Test.Tasty.SmallCheck.Laws.Applicative
 import Test.Tasty.SmallCheck.Laws.Functor
 import Test.Tasty.SmallCheck.Laws.Monoid
 
 main :: IO ()
-main = defaultMain $ testGroup "Laws" [monoidTests, functorTests]
+main = defaultMain $ testGroup "Laws" [monoidTests, functorTests, applicativeTests]
 
 monoidTests :: TestTree
 monoidTests = testGroup "Monoid"
@@ -51,5 +52,21 @@ functorTests = testGroup "Functor"
       [ testFunctor (Proxy :: Proxy [Bool]) ]
     , testGroup "Int"
       [ testFunctor (Proxy :: Proxy [Int]) ]
+    ]
+  ]
+
+applicativeTests :: TestTree
+applicativeTests = testGroup "Applicative"
+  [ testGroup "Maybe"
+    [ testGroup "Int"
+      [ testApplicative (Proxy :: Proxy (Maybe Int)) ]
+    , testGroup "Float"
+      [ testApplicative (Proxy :: Proxy (Maybe Float)) ]
+    ]
+  , testGroup "[]"
+    [ testGroup "Bool"
+      [ testApplicative (Proxy :: Proxy [Bool]) ]
+    , testGroup "Char"
+      [ testApplicative (Proxy :: Proxy [Char]) ]
     ]
   ]
