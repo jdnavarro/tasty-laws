@@ -1,6 +1,7 @@
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# OPTIONS_GHC -fno-warn-orphans #-}
 module Main where
 
 #if !MIN_VERSION_base(4,8,0)
@@ -9,7 +10,7 @@ import Control.Applicative ((<$>))
 import Data.Monoid (Sum(..), Product(..))
 import Data.Proxy
 
-import Test.SmallCheck.Series (Serial(series), Series)
+import Test.SmallCheck.Series (Serial(series))
 import Test.Tasty (TestTree, defaultMain, testGroup)
 
 import Test.Tasty.SmallCheck.Laws.Applicative
@@ -23,19 +24,19 @@ monoidTests :: TestTree
 monoidTests = testGroup "Monoid"
   [ testGroup "Sum"
     [ testGroup "Int"
-      [ testMonoid $ Sum <$> (series :: Series IO Int) ]
+      [ testMonoid (Proxy :: Proxy (Sum Int)) ]
     , testGroup "Integer"
-      [ testMonoid $ Sum <$> (series :: Series IO Integer) ]
+      [ testMonoid (Proxy :: Proxy (Sum Integer)) ]
     , testGroup "Float"
-      [ testMonoid $ Sum <$> (series :: Series IO Float) ]
+      [ testMonoid (Proxy :: Proxy (Sum Float)) ]
     ]
   , testGroup "Product"
-    [ testGroup "Int"
-      [ testMonoid $ Product <$> (series :: Series IO Int) ]
+     [ testGroup "Int"
+      [ testMonoid (Proxy :: Proxy (Product Int)) ]
     , testGroup "Integer"
-      [ testMonoid $ Product <$> (series :: Series IO Integer) ]
+      [ testMonoid (Proxy :: Proxy (Product Integer)) ]
     , testGroup "Float"
-      [ testMonoid $ Product <$> (series :: Series IO Float) ]
+      [ testMonoid (Proxy :: Proxy (Product Float)) ]
     ]
   ]
 
@@ -70,3 +71,11 @@ applicativeTests = testGroup "Applicative"
       [ testApplicative (Proxy :: Proxy [Char]) ]
     ]
   ]
+
+
+instance (Monad m, Serial m a) => Serial m (Sum a) where
+    series = Sum <$> series
+
+instance (Monad m, Serial m a) => Serial m (Product a) where
+    series = Product <$> series
+
