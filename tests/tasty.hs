@@ -7,6 +7,7 @@ module Main where
 import Control.Applicative ((<$>))
 #endif
 import Data.Monoid (Sum(..), Product(..))
+import Data.Proxy
 
 import Test.SmallCheck.Series (Serial(series), Series)
 import Test.Tasty (TestTree, defaultMain, testGroup)
@@ -40,7 +41,15 @@ monoidTests = testGroup "Monoid"
 functorTests :: TestTree
 functorTests = testGroup "Functor"
   [ testGroup "Maybe"
-    [ testFunctor (series :: Series IO (Maybe Int))
-    , testFunctor (series :: Series IO (Maybe Char))
+    [ testGroup "Int"
+      [ testFunctor (Proxy :: Proxy (Maybe Int)) ]
+    , testGroup "Char"
+      [ testFunctor (Proxy :: Proxy (Maybe Char)) ]
+    ]
+  , testGroup "[]"
+    [ testGroup "Bool"
+      [ testFunctor (Proxy :: Proxy [Bool]) ]
+    , testGroup "Int"
+      [ testFunctor (Proxy :: Proxy [Int]) ]
     ]
   ]
