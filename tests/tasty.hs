@@ -72,10 +72,8 @@ applicativeTests = testGroup "Applicative"
     ]
   ]
 
-
 instance (Monad m, Serial m a) => Serial m (Sum a) where
     series = Sum <$> series
 
 instance (Monad m, Serial m a) => Serial m (Product a) where
     series = Product <$> series
-

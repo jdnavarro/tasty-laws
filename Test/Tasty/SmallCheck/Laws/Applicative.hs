@@ -13,22 +13,24 @@ import Test.Tasty.SmallCheck (testProperty)
 import Test.SmallCheck.Series (Series, Serial(series))
 
 import Test.SmallCheck.Laws.Applicative
+import Test.Tasty.SmallCheck.Laws.Functor
 
 testApplicative
   :: forall f a .
      ( Applicative f
      , Show a, Eq a
-     , Show (f a), Eq (f a)
+     , Show (f a), Eq (f a), (Eq (f (f a)))
      , Show (f (a -> a))
      , Serial IO a
      , Serial IO (f a)
      , Serial IO (a -> a)
      , Serial IO (f (a -> a))
-     , Serial Identity a
+     , Serial Identity a, Serial Identity (f a)
      )
   => Proxy (f a) -> TestTree
-testApplicative _ = testGroup "Applicative"
-  [ testProperty "pure id <*> v ≡ v" $ identity (series :: Series IO (f a))
+testApplicative proxy = testGroup "Applicative"
+  [ testFunctor proxy
+  , testProperty "pure id <*> v ≡ v" $ identity (series :: Series IO (f a))
   , testProperty "pure (.) <*> u <*> v <*> w ≡  u <*> (v <*> w)" $ composition
       (series :: Series IO (f (a -> a)))
       (series :: Series IO (f a))
