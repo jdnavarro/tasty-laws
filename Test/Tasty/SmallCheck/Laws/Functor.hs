@@ -8,7 +8,7 @@ import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.SmallCheck (testProperty)
 import Test.SmallCheck.Series (Serial(series), Series)
 
-import Test.SmallCheck.Laws.Functor
+import qualified Test.SmallCheck.Laws.Functor as Functor
 
 testFunctor
   :: forall f a .
@@ -19,9 +19,9 @@ testFunctor
      )
   => Proxy (f a) -> TestTree
 testFunctor _ = testGroup "Functor laws"
-  [ testProperty "fmap id == id" $ fmapIdentity (series :: Series IO (f a))
-  , testProperty "fmap (f . g) == fmap f . fmap g"
-     $ fmapCompose (series :: Series IO (f a))
-                   (series :: Series IO (a -> a))
-                   (series :: Series IO (a -> a))
+  [ testProperty "fmap id ≡ id" $ Functor.identity (series :: Series IO (f a))
+  , testProperty "fmap (f . g) ≡ fmap f . fmap g" $ Functor.composition
+      (series :: Series IO (f a))
+      (series :: Series IO (a -> a))
+      (series :: Series IO (a -> a))
   ]

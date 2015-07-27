@@ -11,12 +11,14 @@ import Test.SmallCheck.Series (Series, Serial(series))
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.SmallCheck (testProperty)
 
-import Test.SmallCheck.Laws.Monoid
+import qualified Test.SmallCheck.Laws.Monoid as Monoid
 
 testMonoid :: forall a . (Show a, Eq a, Monoid a, Serial IO a) => Proxy a -> TestTree
 testMonoid _ = testGroup "Monoid laws"
-  [ testProperty "mempty <> x = x" $ leftIdentity (series :: Series IO a)
-  , testProperty "x <> mempty = x" $ rightIdentity (series :: Series IO a)
-  , testProperty "x <> (y <> z) = (x <> y) <> z" $ associativity (series :: Series IO a)
-  , testProperty "mconcat = foldr mappend mempty" $ mconcatProp (series :: Series IO a)
+  [ testProperty "mempty <> x ≡ x" $ Monoid.leftIdentity (series :: Series IO a)
+  , testProperty "x <> mempty ≡ x" $ Monoid.rightIdentity (series :: Series IO a)
+  , testProperty "x <> (y <> z) ≡ (x <> y) <> z"
+  $ Monoid.associativity (series :: Series IO a)
+  , testProperty "mconcat ≡ foldr mappend mempty"
+  $ Monoid.mconcat (series :: Series IO a)
   ]

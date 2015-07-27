@@ -6,16 +6,16 @@ import Test.SmallCheck (Property, over)
 import Test.SmallCheck.Series (Serial, Series)
 import Test.SmallCheck.Series.Utils (zipLogic3)
 
-fmapIdentity
+identity
   :: (Eq (f a), Monad m, Show (f a), Functor f)
   => Series m (f a) -> Property m
-fmapIdentity s = over s $ \x -> fmap id x == x
+identity s = over s $ \x -> fmap id x == x
 
-fmapCompose
+composition
   :: ( Monad m, Functor f, Show a, Show b, Show c
      , Show (f a), Eq (f c)
      , Serial Identity a, Serial Identity b
      )
   => Series m (f a) -> Series m (b -> c) -> Series m (a -> b) -> Property m
-fmapCompose xs fs gs = over (zipLogic3 xs fs gs) $ \(x,f,g) ->
+composition xs fs gs = over (zipLogic3 xs fs gs) $ \(x,f,g) ->
     fmap (f . g) x == (fmap f . fmap g) x

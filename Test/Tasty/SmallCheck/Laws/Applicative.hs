@@ -12,7 +12,7 @@ import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.SmallCheck (testProperty)
 import Test.SmallCheck.Series (Series, Serial(series))
 
-import Test.SmallCheck.Laws.Applicative
+import qualified Test.SmallCheck.Laws.Applicative as Applicative
 import Test.Tasty.SmallCheck.Laws.Functor
 
 testApplicative
@@ -30,16 +30,18 @@ testApplicative
   => Proxy (f a) -> TestTree
 testApplicative proxy = testGroup "Applicative"
   [ testFunctor proxy
-  , testProperty "pure id <*> v ≡ v" $ identity (series :: Series IO (f a))
-  , testProperty "pure (.) <*> u <*> v <*> w ≡  u <*> (v <*> w)" $ composition
+  , testProperty "pure id <*> v ≡ v"
+  $ Applicative.identity (series :: Series IO (f a))
+  , testProperty "pure (.) <*> u <*> v <*> w ≡  u <*> (v <*> w)"
+  $ Applicative.composition
       (series :: Series IO (f (a -> a)))
       (series :: Series IO (f a))
       (series :: Series IO (f (a -> a)))
-  , testProperty "pure f <*> pure x ≡ pure (f x)" $ homomorphism
+  , testProperty "pure f <*> pure x ≡ pure (f x)" $ Applicative.homomorphism
       (Proxy :: Proxy f)
       (series :: Series IO a)
       (series :: Series IO (a -> a))
-  , testProperty "u <*> pure y ≡ pure ($ y) <*> u]" $ interchange
+  , testProperty "u <*> pure y ≡ pure ($ y) <*> u]" $ Applicative.interchange
       (series :: Series IO a)
       (series :: Series IO (f (a -> a)))
   ]
