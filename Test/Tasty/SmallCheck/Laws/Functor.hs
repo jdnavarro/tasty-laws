@@ -2,7 +2,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 module Test.Tasty.SmallCheck.Laws.Functor where
 
-import Data.Proxy
+import Data.Proxy (Proxy)
 import Data.Functor.Identity (Identity)
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.SmallCheck (testProperty)

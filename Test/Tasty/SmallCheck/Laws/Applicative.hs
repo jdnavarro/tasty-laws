@@ -6,8 +6,8 @@ module Test.Tasty.SmallCheck.Laws.Applicative where
 #if !MIN_VERSION_base(4,8,0)
 import Control.Applicative (Applicative)
 #endif
-import Data.Proxy
 import Data.Functor.Identity (Identity)
+import Data.Proxy (Proxy(..))
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.SmallCheck (testProperty)
 import Test.SmallCheck.Series (Series, Serial(series))

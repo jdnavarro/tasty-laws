@@ -6,7 +6,7 @@ module Test.Tasty.SmallCheck.Laws.Monoid where
 #if !MIN_VERSION_base(4,8,0)
 import Data.Monoid (Monoid)
 #endif
-import Data.Proxy
+import Data.Proxy (Proxy)
 import Test.SmallCheck.Series (Series, Serial(series))
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.SmallCheck (testProperty)

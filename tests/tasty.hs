@@ -8,7 +8,7 @@ module Main where
 import Control.Applicative ((<$>))
 #endif
 import Data.Monoid (Sum(..), Product(..))
-import Data.Proxy
+import Data.Proxy (Proxy(..))
 
 import Test.SmallCheck.Series (Serial(series))
 import Test.Tasty (TestTree, defaultMain, testGroup)
