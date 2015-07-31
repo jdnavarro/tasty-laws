@@ -26,9 +26,11 @@ library
   default-language:    Haskell2010
   exposed-modules:     Test.SmallCheck.Laws.Applicative,
                        Test.SmallCheck.Laws.Functor,
+                       Test.SmallCheck.Laws.Monad,
                        Test.SmallCheck.Laws.Monoid,
                        Test.Tasty.SmallCheck.Laws.Applicative,
                        Test.Tasty.SmallCheck.Laws.Functor,
+                       Test.Tasty.SmallCheck.Laws.Monad,
                        Test.Tasty.SmallCheck.Laws.Monoid
   build-depends:       base >=4.6 && <4.9,
                        smallcheck >=1.1.1,

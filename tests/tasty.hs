@@ -15,10 +15,16 @@ import Test.Tasty (TestTree, defaultMain, testGroup)
 
 import Test.Tasty.SmallCheck.Laws.Applicative
 import Test.Tasty.SmallCheck.Laws.Functor
+import Test.Tasty.SmallCheck.Laws.Monad
 import Test.Tasty.SmallCheck.Laws.Monoid
 
 main :: IO ()
-main = defaultMain $ testGroup "Laws" [monoidTests, functorTests, applicativeTests]
+main = defaultMain $ testGroup "Laws"
+     [ monoidTests
+     , functorTests
+     , applicativeTests
+     , monadTests
+     ]
 
 monoidTests :: TestTree
 monoidTests = testGroup "Monoid"
@@ -69,6 +75,20 @@ applicativeTests = testGroup "Applicative"
       [ testApplicative (Proxy :: Proxy [Bool]) ]
     , testGroup "Char"
       [ testApplicative (Proxy :: Proxy [Char]) ]
+    ]
+  ]
+
+monadTests :: TestTree
+monadTests = testGroup "Monad"
+  [ testGroup "Maybe"
+    [ testGroup "()"
+      [ testMonad (Proxy :: Proxy (Maybe ())) ]
+    , testGroup "Int"
+      [ testMonad (Proxy :: Proxy (Maybe Int)) ]
+    ]
+  , testGroup "[]"
+    [ testGroup "()"
+      [ testMonad (Proxy :: Proxy [()]) ]
     ]
   ]
 
