@@ -5,8 +5,11 @@ description:
   Automatic `smallcheck` properties and `tasty` runners for:
   .
   - Monoid laws.
+  .
   - Functor laws.
+  .
   - Applicative laws.
+  .
   - Monad laws.
   .
   Use the @<https://hackage.haskell.org/package/tasty Tasty>@ modules for
