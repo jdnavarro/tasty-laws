@@ -18,7 +18,7 @@ testMonoid _ = testGroup "Monoid laws"
   [ testProperty "mempty <> x ≡ x" $ Monoid.leftIdentity (series :: Series IO a)
   , testProperty "x <> mempty ≡ x" $ Monoid.rightIdentity (series :: Series IO a)
   , testProperty "x <> (y <> z) ≡ (x <> y) <> z"
-  $ Monoid.associativity (series :: Series IO a)
+  $ Monoid.associativity (series :: Series IO a) series series
   , testProperty "mconcat ≡ foldr mappend mempty"
   $ Monoid.mconcat (series :: Series IO a)
   ]

@@ -11,6 +11,7 @@ import Data.Monoid ((<>))
 import qualified Data.Monoid as Monoid (mconcat)
 import Test.SmallCheck (Property, over)
 import Test.SmallCheck.Series (Series)
+import Test.SmallCheck.Series.Utils (zipLogic3)
 
 leftIdentity
   :: (Eq a, Monad m, Show a, Monoid a)
@@ -24,12 +25,10 @@ rightIdentity s = over s $ \x -> x <> mempty == x
 
 associativity
   :: (Eq a, Monad m, Show a, Monoid a)
-  => Series m a -> Property m
-associativity s =
-    over s $ \x ->
-        over s $ \y ->
-            over s $ \z ->
-                x <> (y <> z) == (x <> y) <> z
+  => Series m a -> Series m a -> Series m a -> Property m
+associativity xs ys zs =
+    over (zipLogic3 xs ys zs) $ \(x,y,z) ->
+        x <> (y <> z) == (x <> y) <> z
 
 mconcat
   :: (Eq a, Monad m, Show a, Monoid a)
