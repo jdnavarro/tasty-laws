@@ -10,6 +10,8 @@ import Test.SmallCheck.Series (Serial(series), Series)
 
 import qualified Test.SmallCheck.Laws.Functor as Functor
 
+-- | @tasty@ 'TestTree' for 'Functor' laws. You need to provide the type
+--   wrapped in a `Proxy` and make sure 'a' is an instance of 'Serial'.
 testFunctor
   :: forall f a .
      ( Eq (f a), Eq (f (f a)), Functor f, Show a, Show (f a)

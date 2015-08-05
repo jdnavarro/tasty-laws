@@ -4,9 +4,18 @@ synopsis:            SmallCheck properties for standard type classes
 description:
   Automatic `smallcheck` properties and `tasty` runners for:
   .
-  - Monoid laws
-  - Functor laws
-  - Monad laws
+  - Monoid laws.
+  - Functor laws.
+  - Applicative laws.
+  - Monad laws.
+  .
+  Use the @<https://hackage.haskell.org/package/tasty Tasty>@ modules for
+  preassembled tasty runners, your data types need to be instances of
+  @<https://hackage.haskell.org/package/smallcheck-1.1.1/docs/Test-SmallCheck-Series.html#t:Serial Serial>@.
+  For more granular control on how the
+  @<https://hackage.haskell.org/package/smallcheck SmallCheck>@
+  @<https://hackage.haskell.org/package/smallcheck-1.1.1/docs/Test-SmallCheck-Series.html#t:Series Series>@
+  are created use the modules under @Test.SmallCheck.Laws@.
 license:             BSD3
 license-file:        LICENSE
 author:              Danny Navarro

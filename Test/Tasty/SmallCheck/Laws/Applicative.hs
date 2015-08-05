@@ -15,6 +15,8 @@ import Test.SmallCheck.Series (Series, Serial(series))
 import qualified Test.SmallCheck.Laws.Applicative as Applicative
 import Test.Tasty.SmallCheck.Laws.Functor
 
+-- | @tasty@ 'TestTree' for 'Applicative' laws. You need to provide the type
+--   wrapped in a `Proxy` and make sure 'a' is an instance of 'Serial'.
 testApplicative
   :: forall f a .
      ( Applicative f
@@ -32,7 +34,7 @@ testApplicative proxy = testGroup "Applicative"
   [ testFunctor proxy
   , testProperty "pure id <*> v ≡ v"
   $ Applicative.identity (series :: Series IO (f a))
-  , testProperty "pure (.) <*> u <*> v <*> w ≡  u <*> (v <*> w)"
+  , testProperty "(.) <$> u <*> v <*> w ≡  u <*> (v <*> w)"
   $ Applicative.composition
       (series :: Series IO (f (a -> a)))
       (series :: Series IO (f a))
@@ -41,7 +43,7 @@ testApplicative proxy = testGroup "Applicative"
       (Proxy :: Proxy f)
       (series :: Series IO a)
       (series :: Series IO (a -> a))
-  , testProperty "u <*> pure y ≡ pure ($ y) <*> u]" $ Applicative.interchange
+  , testProperty "u <*> pure y ≡ pure ($ y) <*> u" $ Applicative.interchange
       (series :: Series IO a)
       (series :: Series IO (f (a -> a)))
   ]

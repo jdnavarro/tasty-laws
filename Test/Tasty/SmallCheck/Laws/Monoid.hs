@@ -13,6 +13,8 @@ import Test.Tasty.SmallCheck (testProperty)
 
 import qualified Test.SmallCheck.Laws.Monoid as Monoid
 
+-- | @tasty@ 'TestTree' for 'Applicative' laws. You need to provide the type
+--   wrapped in a `Proxy` and make sure 'a' is an instance of 'Serial'.
 testMonoid :: forall a . (Show a, Eq a, Monoid a, Serial IO a) => Proxy a -> TestTree
 testMonoid _ = testGroup "Monoid laws"
   [ testProperty "mempty <> x ≡ x" $ Monoid.leftIdentity (series :: Series IO a)

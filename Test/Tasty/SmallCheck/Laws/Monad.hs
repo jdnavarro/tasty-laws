@@ -15,6 +15,8 @@ import Test.Tasty.SmallCheck (testProperty)
 import Test.Tasty.SmallCheck.Laws.Applicative
 import qualified Test.SmallCheck.Laws.Monad as Monad
 
+-- | @tasty@ 'TestTree' for 'Monad' laws. You need to provide the type
+--   wrapped in a `Proxy` and make sure 'a' is an instance of 'Serial'.
 testMonad
   :: forall f a .
      ( Applicative f, Monad f

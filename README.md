@@ -4,6 +4,23 @@
 
 Automatic `smallcheck` properties and `tasty` runners for:
 
- - Monoid laws
- - Functor laws
- - Monad laws
+ - Monoid laws.
+ - Functor laws.
+ - Applicative laws.
+ - Monad laws.
+
+## Installation
+
+Make sure you have [`stack`](https://github.com/commercialhaskell/stack)
+installed. Then type:
+
+```sh
+$ stack build
+```
+To run the test suite type:
+
+```sh
+$ stack test
+```
+
+<!-- TODO: Write minitutorial here about to use 'tasty' orphan instances -->
