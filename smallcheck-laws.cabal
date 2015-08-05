@@ -1,5 +1,5 @@
 name:                smallcheck-laws
-version:             0.0
+version:             0.1
 synopsis:            SmallCheck properties for standard type classes
 description:
   Automatic `smallcheck` properties and `tasty` runners for:
