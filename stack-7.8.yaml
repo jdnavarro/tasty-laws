@@ -2,5 +2,5 @@ flags: {}
 packages:
 - '.'
 extra-deps:
-- smallcheck-series-0.3
-resolver: lts-2.21
+- smallcheck-series-0.5.1
+resolver: lts-2.22
