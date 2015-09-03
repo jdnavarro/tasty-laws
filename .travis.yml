@@ -6,20 +6,18 @@ env:
  # Dependencies not present in Debian use the cabal solver. This includes
  # direct dependencies too.
  - CUSTOMSET=jessie
+ # Direct dependencies set to the minimum bounds. Transitive depencies use
+ # cabal solver.
+ - CUSTOMSET=minimum
  # Minimum dependencies for direct depencies and Depency set frozen to be in
  # sync with Debian Jessie Haskell packages.  Dependencies not present in
  # Debian use the cabal solver.
  - CUSTOMSET=jessie-minimum
- - CUSTOMSET=minimum
  - CABALVER=head GHCVER=head
 
 matrix:
   allow_failures:
-   - env:
-     # Direct dependencies set to the minimum bounds. Transitive depencies use
-     # cabal solver.
-     - CUSTOMSET=minimum
-     - CABALVER=head GHCVER=head
+   - env: CABALVER=head GHCVER=head
 
 before_install:
  - case "$CUSTOMSET" in
