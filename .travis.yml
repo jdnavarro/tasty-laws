@@ -10,6 +10,7 @@ env:
  # sync with Debian Jessie Haskell packages.  Dependencies not present in
  # Debian use the cabal solver.
  - CUSTOMSET=jessie-minimum
+ - CUSTOMSET=minimum
  - CABALVER=head GHCVER=head
 
 matrix:
