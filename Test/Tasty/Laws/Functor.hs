@@ -1,6 +1,6 @@
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE ScopedTypeVariables #-}
-module Test.Tasty.SmallCheck.Laws.Functor where
+module Test.Tasty.Laws.Functor where
 
 import Data.Proxy (Proxy)
 import Data.Functor.Identity (Identity)

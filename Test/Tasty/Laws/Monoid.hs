@@ -1,7 +1,7 @@
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE ScopedTypeVariables #-}
-module Test.Tasty.SmallCheck.Laws.Monoid where
+module Test.Tasty.Laws.Monoid where
 
 #if !MIN_VERSION_base(4,8,0)
 import Data.Monoid (Monoid)

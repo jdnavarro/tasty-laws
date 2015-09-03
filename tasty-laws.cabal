@@ -20,10 +20,10 @@ source-repository head
 library
   ghc-options:         -Wall
   default-language:    Haskell2010
-  exposed-modules:     Test.Tasty.SmallCheck.Laws.Applicative,
-                       Test.Tasty.SmallCheck.Laws.Functor,
-                       Test.Tasty.SmallCheck.Laws.Monad,
-                       Test.Tasty.SmallCheck.Laws.Monoid
+  exposed-modules:     Test.Tasty.Laws.Applicative,
+                       Test.Tasty.Laws.Functor,
+                       Test.Tasty.Laws.Monad,
+                       Test.Tasty.Laws.Monoid
   build-depends:       base >=4.6 && <4.9,
                        smallcheck >=1.1.1,
                        smallcheck-series >=0.3,

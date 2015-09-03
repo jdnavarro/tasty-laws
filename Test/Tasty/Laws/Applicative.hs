@@ -1,7 +1,7 @@
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE ScopedTypeVariables #-}
-module Test.Tasty.SmallCheck.Laws.Applicative where
+module Test.Tasty.Laws.Applicative where
 
 #if !MIN_VERSION_base(4,8,0)
 import Control.Applicative (Applicative)
