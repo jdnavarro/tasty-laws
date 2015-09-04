@@ -10,13 +10,13 @@ import Control.Applicative ((<$>))
 import Data.Monoid (Sum(..), Product(..))
 import Data.Proxy (Proxy(..))
 
-import Test.SmallCheck.Series (Serial(series))
+import Test.SmallCheck.Series (Series, Serial(series))
 import Test.Tasty (TestTree, defaultMain, testGroup)
 
 import Test.Tasty.Laws.Applicative
 import Test.Tasty.Laws.Functor
 import Test.Tasty.Laws.Monad
-import Test.Tasty.Laws.Monoid
+import qualified Test.Tasty.Laws.Monoid as Monoid
 
 main :: IO ()
 main = defaultMain $ testGroup "Laws"
@@ -26,23 +26,29 @@ main = defaultMain $ testGroup "Laws"
      , monadTests
      ]
 
+instance (Monad m, Serial m a) => Serial m (Sum a) where
+    series = Sum <$> series
+
+instance (Monad m, Serial m a) => Serial m (Product a) where
+    series = Product <$> series
+
 monoidTests :: TestTree
 monoidTests = testGroup "Monoid"
-  [ testGroup "Sum"
-    [ testGroup "Int"
-      [ testMonoid (Proxy :: Proxy (Sum Int)) ]
-    , testGroup "Integer"
-      [ testMonoid (Proxy :: Proxy (Sum Integer)) ]
-    , testGroup "Float"
-      [ testMonoid (Proxy :: Proxy (Sum Float)) ]
-    ]
-  , testGroup "Product"
+  [ testGroup "Product"
      [ testGroup "Int"
-      [ testMonoid (Proxy :: Proxy (Product Int)) ]
+      [ Monoid.test (series :: Series IO (Product Int)) ]
     , testGroup "Integer"
-      [ testMonoid (Proxy :: Proxy (Product Integer)) ]
+      [ Monoid.test (series :: Series IO (Product Integer)) ]
     , testGroup "Float"
-      [ testMonoid (Proxy :: Proxy (Product Float)) ]
+      [ Monoid.test (series :: Series IO (Product Float)) ]
+    ]
+  , testGroup "Exhausitive Sum"
+    [ testGroup "Int"
+      [ Monoid.testExhaustive (series :: Series IO (Sum Int)) ]
+    , testGroup "Integer"
+      [ Monoid.testExhaustive (series :: Series IO (Sum Integer)) ]
+    , testGroup "Float"
+      [ Monoid.testExhaustive (series :: Series IO (Sum Float)) ]
     ]
   ]
 
@@ -91,9 +97,3 @@ monadTests = testGroup "Monad"
       [ testMonad (Proxy :: Proxy [()]) ]
     ]
   ]
-
-instance (Monad m, Serial m a) => Serial m (Sum a) where
-    series = Sum <$> series
-
-instance (Monad m, Serial m a) => Serial m (Product a) where
-    series = Product <$> series
