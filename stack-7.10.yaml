@@ -2,6 +2,6 @@ flags: {}
 packages:
 - '.'
 extra-deps:
-- smallcheck-laws-0.1
+- smallcheck-laws-0.2
 - smallcheck-series-0.5.1
 resolver: lts-3.4

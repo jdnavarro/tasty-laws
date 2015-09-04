@@ -11,9 +11,9 @@ import Data.Proxy (Proxy(..))
 import Test.SmallCheck.Series (Series, Serial(series))
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.SmallCheck (testProperty)
-
-import Test.Tasty.SmallCheck.Laws.Applicative
 import qualified Test.SmallCheck.Laws.Monad as Monad
+
+import Test.Tasty.Laws.Applicative
 
 -- | @tasty@ 'TestTree' for 'Monad' laws. You need to provide the type
 --   wrapped in a `Proxy` and make sure 'a' is an instance of 'Serial'.

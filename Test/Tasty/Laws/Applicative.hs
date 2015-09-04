@@ -13,7 +13,7 @@ import Test.Tasty.SmallCheck (testProperty)
 import Test.SmallCheck.Series (Series, Serial(series))
 
 import qualified Test.SmallCheck.Laws.Applicative as Applicative
-import Test.Tasty.SmallCheck.Laws.Functor
+import Test.Tasty.Laws.Functor
 
 -- | @tasty@ 'TestTree' for 'Applicative' laws. You need to provide the type
 --   wrapped in a `Proxy` and make sure 'a' is an instance of 'Serial'.

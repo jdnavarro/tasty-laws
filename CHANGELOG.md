@@ -10,4 +10,7 @@ Versioning](http://semver.org/).
   [`smallcheck-laws-0.1`](https://hackage.haskell.org/package/smallcheck-laws-0.1).
   This package now contains `Tasty` specific modules.
 
+### Changed
+- Simplify module hierarchy: `Test.Tasty.SmallCheck.Laws` -> `Test.Tasty.Laws`
+
 [0.2]: https://github.com/jdnavarro/tasty-laws/compare/bf1caa5...v0.2

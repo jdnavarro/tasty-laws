@@ -13,10 +13,10 @@ import Data.Proxy (Proxy(..))
 import Test.SmallCheck.Series (Serial(series))
 import Test.Tasty (TestTree, defaultMain, testGroup)
 
-import Test.Tasty.SmallCheck.Laws.Applicative
-import Test.Tasty.SmallCheck.Laws.Functor
-import Test.Tasty.SmallCheck.Laws.Monad
-import Test.Tasty.SmallCheck.Laws.Monoid
+import Test.Tasty.Laws.Applicative
+import Test.Tasty.Laws.Functor
+import Test.Tasty.Laws.Monad
+import Test.Tasty.Laws.Monoid
 
 main :: IO ()
 main = defaultMain $ testGroup "Laws"
