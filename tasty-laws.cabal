@@ -45,7 +45,7 @@ test-suite tasty
   build-depends:       base >=4.6 && <4.9,
                        smallcheck >=1.1.1,
                        tasty >=0.10,
-                       smallcheck-laws
+                       smallcheck-laws >=0.2
 
   if impl(ghc < 7.8)
      build-depends: tagged >=0.7.2
