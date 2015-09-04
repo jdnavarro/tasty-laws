@@ -3,14 +3,25 @@
 --
 -- > import qualified Test.Tasty.Laws as Monoid
 --
-module Test.Tasty.Laws.Monoid where
+module Test.Tasty.Laws.Monoid
+  ( test
+  , testExhaustive
+  , testMConcat
+  , module Test.SmallCheck.Laws.Monoid
+  ) where
 
 #if !MIN_VERSION_base(4,8,0)
 import Data.Monoid (Monoid)
 #endif
 
 import Test.SmallCheck.Series (Series)
-import qualified Test.SmallCheck.Laws.Monoid as Monoid
+import Test.SmallCheck.Laws.Monoid
+  ( leftIdentity
+  , rightIdentity
+  , associativity
+  , associativitySum
+  , mconcatProp
+  )
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.SmallCheck (testProperty)
 
@@ -24,10 +35,10 @@ import Test.Tasty.SmallCheck (testProperty)
 -- @
 test :: (Eq a, Show a, Monoid a) => Series IO a -> TestTree
 test ms = testGroup "Monoid laws"
-  [ testProperty "mempty <> x ≡ x" $ Monoid.leftIdentity ms
-  , testProperty "x <> mempty ≡ x" $ Monoid.rightIdentity ms
+  [ testProperty "mempty <> x ≡ x" $ leftIdentity ms
+  , testProperty "x <> mempty ≡ x" $ rightIdentity ms
   , testProperty "x <> (y <> z) ≡ (x <> y) <> z"
-        $ Monoid.associativitySum ms ms ms
+        $ associativitySum ms ms ms
   ]
 
 -- | @tasty@ 'TestTree' for 'Monoid' laws. Product of series for associativity
@@ -41,12 +52,12 @@ test ms = testGroup "Monoid laws"
 -- @
 testExhaustive :: (Eq a, Show a, Monoid a) => Series IO a -> TestTree
 testExhaustive ms = testGroup "Monoid laws"
-  [ testProperty "mempty <> x ≡ x" $ Monoid.leftIdentity ms
-  , testProperty "x <> mempty ≡ x" $ Monoid.rightIdentity ms
+  [ testProperty "mempty <> x ≡ x" $ leftIdentity ms
+  , testProperty "x <> mempty ≡ x" $ rightIdentity ms
   , testProperty "x <> (y <> z) ≡ (x <> y) <> z"
-        $ Monoid.associativity ms ms ms
+        $ associativity ms ms ms
   ]
 
 -- | Use this test when implementing the 'mconcat' method.
 testMConcat :: (Eq a, Show a, Monoid a) => Series IO a -> TestTree
-testMConcat ms = testProperty "mconcat ≡ foldr mappend mempty" $ Monoid.mconcat ms
+testMConcat ms = testProperty "mconcat ≡ foldr mappend mempty" $ mconcatProp ms
