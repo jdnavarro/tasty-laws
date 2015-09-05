@@ -53,6 +53,7 @@ install:
  - cabal --version
  - echo "$(ghc --version) [$(ghc --print-project-git-commit-id 2> /dev/null || echo '?')]"
  - travis_retry cabal update
+ - git clone https://github.com/jdnavarro/smallcheck-laws; cabal install ./smallcheck-laws
  - cabal install --only-dependencies --enable-tests
 
 script:
