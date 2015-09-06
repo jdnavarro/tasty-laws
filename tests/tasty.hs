@@ -14,16 +14,16 @@ import Test.SmallCheck.Series (Series, Serial(series))
 import Test.Tasty (TestTree, defaultMain, testGroup)
 
 import Test.Tasty.Laws.Applicative
-import Test.Tasty.Laws.Functor
 import Test.Tasty.Laws.Monad
+import qualified Test.Tasty.Laws.Functor as Functor
 import qualified Test.Tasty.Laws.Monoid as Monoid
 
 main :: IO ()
 main = defaultMain $ testGroup "Laws"
      [ monoidTests
      , functorTests
-     , applicativeTests
-     , monadTests
+--     , applicativeTests
+--     , monadTests
      ]
 
 instance (Monad m, Serial m a) => Serial m (Sum a) where
@@ -55,45 +55,51 @@ monoidTests = testGroup "Monoid"
 functorTests :: TestTree
 functorTests = testGroup "Functor"
   [ testGroup "Maybe"
-    [ testGroup "Int"
-      [ testFunctor (Proxy :: Proxy (Maybe Int)) ]
+    [ testGroup "Unit"
+      [ Functor.test (series :: Series IO (Maybe ())) ]
+    , testGroup "Int"
+      [ Functor.testMono (series :: Series IO (Maybe Int)) ]
     , testGroup "Char"
-      [ testFunctor (Proxy :: Proxy (Maybe Char)) ]
+      [ Functor.testMono (series :: Series IO (Maybe Char)) ]
+    , testGroup "Bool"
+      [ Functor.testMonoExhaustive (series :: Series IO (Maybe Bool)) ]
     ]
   , testGroup "[]"
-    [ testGroup "Bool"
-      [ testFunctor (Proxy :: Proxy [Bool]) ]
+    [ testGroup "Unit"
+      [ Functor.test (series :: Series IO [()]) ]
+    , testGroup "Bool"
+      [ Functor.testMono (series :: Series IO [Bool]) ]
     , testGroup "Int"
-      [ testFunctor (Proxy :: Proxy [Int]) ]
+      [ Functor.testMono (series :: Series IO [Int]) ]
     ]
   ]
 
-applicativeTests :: TestTree
-applicativeTests = testGroup "Applicative"
-  [ testGroup "Maybe"
-    [ testGroup "Int"
-      [ testApplicative (Proxy :: Proxy (Maybe Int)) ]
-    , testGroup "Float"
-      [ testApplicative (Proxy :: Proxy (Maybe Float)) ]
-    ]
-  , testGroup "[]"
-    [ testGroup "Bool"
-      [ testApplicative (Proxy :: Proxy [Bool]) ]
-    , testGroup "Char"
-      [ testApplicative (Proxy :: Proxy [Char]) ]
-    ]
-  ]
+-- applicativeTests :: TestTree
+-- applicativeTests = testGroup "Applicative"
+--   [ testGroup "Maybe"
+--     [ testGroup "Int"
+--       [ testApplicative (Proxy :: Proxy (Maybe Int)) ]
+--     , testGroup "Float"
+--       [ testApplicative (Proxy :: Proxy (Maybe Float)) ]
+--     ]
+--   , testGroup "[]"
+--     [ testGroup "Bool"
+--       [ testApplicative (Proxy :: Proxy [Bool]) ]
+--     , testGroup "Char"
+--       [ testApplicative (Proxy :: Proxy [Char]) ]
+--     ]
+--   ]
 
-monadTests :: TestTree
-monadTests = testGroup "Monad"
-  [ testGroup "Maybe"
-    [ testGroup "()"
-      [ testMonad (Proxy :: Proxy (Maybe ())) ]
-    , testGroup "Int"
-      [ testMonad (Proxy :: Proxy (Maybe Int)) ]
-    ]
-  , testGroup "[]"
-    [ testGroup "()"
-      [ testMonad (Proxy :: Proxy [()]) ]
-    ]
-  ]
+-- monadTests :: TestTree
+-- monadTests = testGroup "Monad"
+--   [ testGroup "Maybe"
+--     [ testGroup "()"
+--       [ testMonad (Proxy :: Proxy (Maybe ())) ]
+--     , testGroup "Int"
+--       [ testMonad (Proxy :: Proxy (Maybe Int)) ]
+--     ]
+--   , testGroup "[]"
+--     [ testGroup "()"
+--       [ testMonad (Proxy :: Proxy [()]) ]
+--     ]
+--   ]

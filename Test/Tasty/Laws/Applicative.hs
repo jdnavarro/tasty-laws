@@ -47,3 +47,5 @@ testApplicative proxy = testGroup "Applicative"
       (series :: Series IO a)
       (series :: Series IO (f (a -> a)))
   ]
+
+testFunctor = undefined
