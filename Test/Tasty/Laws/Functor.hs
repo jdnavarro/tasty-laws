@@ -55,8 +55,8 @@ testPoly
      )
   => Proxy b -> Proxy c -> Series IO (f a) -> TestTree
 testPoly _ _ = testWithComp $ \fs ->
-    composition fs (series :: Series IO (b -> c))
-                   (series :: Series IO (a -> b))
+    compositionSum fs (series :: Series IO (b -> c))
+                      (series :: Series IO (a -> b))
 
 testPolyExhaustive
   :: forall f a b c .
