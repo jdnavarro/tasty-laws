@@ -3,7 +3,7 @@ packages:
 - '.'
 - location:
     git: git@github.com:jdnavarro/smallcheck-laws
-    commit: a2e84af2819e923936a3b393497100c223bf3060
+    commit: 02e658433e06a0b69bda687b581e0e6ab067e40b
 extra-deps:
 - smallcheck-series-0.5.1
 resolver: lts-3.4

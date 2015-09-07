@@ -34,3 +34,5 @@ testMonad proxy = testGroup "Monad laws"
                         (series :: Series IO (a -> f a))
                         (series :: Series IO (a -> f a))
   ]
+
+testApplicative = undefined

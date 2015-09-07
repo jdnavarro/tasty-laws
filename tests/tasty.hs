@@ -8,13 +8,12 @@ module Main where
 import Control.Applicative ((<$>))
 #endif
 import Data.Monoid (Sum(..), Product(..))
-import Data.Proxy (Proxy(..))
 
 import Test.SmallCheck.Series (Series, Serial(series))
 import Test.Tasty (TestTree, defaultMain, testGroup)
 
-import Test.Tasty.Laws.Applicative
-import Test.Tasty.Laws.Monad
+import qualified Test.Tasty.Laws.Applicative as Applicative
+-- import Test.Tasty.Laws.Monad
 import qualified Test.Tasty.Laws.Functor as Functor
 import qualified Test.Tasty.Laws.Monoid as Monoid
 
@@ -22,7 +21,7 @@ main :: IO ()
 main = defaultMain $ testGroup "Laws"
      [ monoidTests
      , functorTests
---     , applicativeTests
+     , applicativeTests
 --     , monadTests
      ]
 
@@ -74,21 +73,27 @@ functorTests = testGroup "Functor"
     ]
   ]
 
--- applicativeTests :: TestTree
--- applicativeTests = testGroup "Applicative"
---   [ testGroup "Maybe"
---     [ testGroup "Int"
---       [ testApplicative (Proxy :: Proxy (Maybe Int)) ]
---     , testGroup "Float"
---       [ testApplicative (Proxy :: Proxy (Maybe Float)) ]
---     ]
---   , testGroup "[]"
---     [ testGroup "Bool"
---       [ testApplicative (Proxy :: Proxy [Bool]) ]
---     , testGroup "Char"
---       [ testApplicative (Proxy :: Proxy [Char]) ]
---     ]
---   ]
+applicativeTests :: TestTree
+applicativeTests = testGroup "Applicative"
+  [ testGroup "Maybe"
+    [ testGroup "Unit"
+      [ Applicative.test (series :: Series IO (Maybe ())) ]
+    , testGroup "Bool"
+      [ Applicative.testMonoExhaustive (series :: Series IO (Maybe Bool)) ]
+    , testGroup "Int"
+      [ Applicative.testMono (series :: Series IO (Maybe Int)) ]
+    , testGroup "Float"
+      [ Applicative.testMono (series :: Series IO (Maybe Float)) ]
+    ]
+  , testGroup "[]"
+    [ testGroup "Unit"
+      [ Applicative.test (series :: Series IO [()]) ]
+    , testGroup "Bool"
+      [ Applicative.testMono (series :: Series IO [Bool]) ]
+    -- , testGroup "Char"
+    --   [ Applicative.testMono (series :: Series IO [Char]) ]
+    ]
+  ]
 
 -- monadTests :: TestTree
 -- monadTests = testGroup "Monad"
