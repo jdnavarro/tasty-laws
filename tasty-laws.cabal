@@ -1,5 +1,5 @@
 name:                tasty-laws
-version:             0.3
+version:             0.3.1
 synopsis:            Test common laws
 description:
   Preassembled 'tasty' 'TestTree's for property testing 'Monoid', 'Functor',
