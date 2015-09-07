@@ -1,9 +1,7 @@
 flags: {}
 packages:
 - '.'
-- location:
-    git: git@github.com:jdnavarro/smallcheck-laws
-    commit: 230cc1bc281b5b077da8e8b323be3b4c95bb8e01
 extra-deps:
+- smallcheck-laws-0.3
 - smallcheck-series-0.5.1
 resolver: lts-3.4

@@ -1,5 +1,5 @@
 name:                tasty-laws
-version:             0.2
+version:             0.3
 synopsis:            Test common laws
 description:
   Preassembled 'tasty' 'TestTree's for property testing 'Monoid', 'Functor',
@@ -28,7 +28,7 @@ library
                        Test.Tasty.Laws.Monoid
   build-depends:       base >=4.6 && <4.9,
                        smallcheck >=1.1.1,
-                       smallcheck-laws >=0.2,
+                       smallcheck-laws >=0.3,
                        smallcheck-series >=0.3,
                        tasty >=0.10,
                        tasty-smallcheck >=0.8.0.1
@@ -47,7 +47,7 @@ test-suite tasty
   build-depends:       base >=4.6 && <4.9,
                        smallcheck >=1.1.1,
                        tasty >=0.10,
-                       smallcheck-laws >=0.2,
+                       smallcheck-laws >=0.3,
                        tasty-laws
 
   if impl(ghc < 7.8)
