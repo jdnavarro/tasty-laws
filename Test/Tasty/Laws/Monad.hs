@@ -14,7 +14,7 @@ import Test.Tasty.SmallCheck (testProperty)
 import qualified Test.Tasty.Laws.Applicative as Applicative
 
 test
-  :: ( Monad m
+  :: ( Applicative m, Monad m
      , Eq (m ()), Eq (m (m ()))
      , Show (m ()), Show (m (() -> ()))
      , Serial Identity (m ())
