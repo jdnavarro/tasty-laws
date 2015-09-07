@@ -13,8 +13,8 @@ import Test.SmallCheck.Series (Series, Serial(series))
 import Test.Tasty (TestTree, defaultMain, testGroup)
 
 import qualified Test.Tasty.Laws.Applicative as Applicative
--- import Test.Tasty.Laws.Monad
 import qualified Test.Tasty.Laws.Functor as Functor
+import qualified Test.Tasty.Laws.Monad as Monad
 import qualified Test.Tasty.Laws.Monoid as Monoid
 
 main :: IO ()
@@ -22,7 +22,7 @@ main = defaultMain $ testGroup "Laws"
      [ monoidTests
      , functorTests
      , applicativeTests
---     , monadTests
+     , monadTests
      ]
 
 instance (Monad m, Serial m a) => Serial m (Sum a) where
@@ -95,16 +95,20 @@ applicativeTests = testGroup "Applicative"
     ]
   ]
 
--- monadTests :: TestTree
--- monadTests = testGroup "Monad"
---   [ testGroup "Maybe"
---     [ testGroup "()"
---       [ testMonad (Proxy :: Proxy (Maybe ())) ]
---     , testGroup "Int"
---       [ testMonad (Proxy :: Proxy (Maybe Int)) ]
---     ]
---   , testGroup "[]"
---     [ testGroup "()"
---       [ testMonad (Proxy :: Proxy [()]) ]
---     ]
---   ]
+monadTests :: TestTree
+monadTests = testGroup "Monad"
+  [ testGroup "Maybe"
+    [ testGroup "Unit"
+      [ Monad.test (series :: Series IO (Maybe ())) ]
+    , testGroup "Bool"
+      [ Monad.testMonoExhaustive (series :: Series IO (Maybe Bool)) ]
+    , testGroup "Int"
+      [ Monad.testMono (series :: Series IO (Maybe Int)) ]
+    ]
+  , testGroup "[]"
+    [ testGroup "Unit"
+      [ Monad.test (series :: Series IO [()]) ]
+    , testGroup "Bool"
+      [ Monad.testMono (series :: Series IO [Bool]) ]
+    ]
+  ]
