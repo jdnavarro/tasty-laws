@@ -4,7 +4,7 @@ follows the formatting recommendations from [Keep a
 CHANGELOG](http://keepachangelog.com/). This project adheres to [Semantic
 Versioning](http://semver.org/).
 
-## [0.3][0.3] - 2015-09-07
+## [0.3.1][0.3.1] - 2015-09-07
 ### Changed
 - `Serial` instances instead `Proxy` where possible.
 
@@ -21,5 +21,5 @@ Versioning](http://semver.org/).
 ### Changed
 - Simplify module hierarchy: `Test.Tasty.SmallCheck.Laws` -> `Test.Tasty.Laws`
 
-[0.3]: https://github.com/jdnavarro/tasty-laws/compare/v0.2...v0.3
+[0.3]: https://github.com/jdnavarro/tasty-laws/compare/v0.2...v0.3.1
 [0.2]: https://github.com/jdnavarro/tasty-laws/compare/bf1caa5...v0.2
