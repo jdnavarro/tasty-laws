@@ -19,7 +19,6 @@ import Data.Proxy (Proxy(..))
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.SmallCheck (testProperty)
 import Test.SmallCheck.Series (Series, Serial(series))
-
 import Test.SmallCheck.Laws.Applicative
   ( identity
   , composition
@@ -40,8 +39,6 @@ test
   => Series IO (f ()) -> TestTree
 test = testMonoExhaustive
 
--- | @tasty@ 'TestTree' for 'Applicative' laws. You need to provide the type
---   wrapped in a `Proxy` and make sure 'a' is an instance of 'Serial'.
 testMono
   :: forall f a .
      ( Applicative f
@@ -67,8 +64,6 @@ testMono fs = testGroup "Applicative"
       (series :: Series IO (f (a -> a)))
   ]
 
--- | @tasty@ 'TestTree' for 'Applicative' laws. You need to provide the type
---   wrapped in a `Proxy` and make sure 'a' is an instance of 'Serial'.
 testMonoExhaustive
   :: forall f a .
      ( Applicative f
@@ -77,7 +72,7 @@ testMonoExhaustive
      , Serial Identity a, Serial Identity (f a)
      , Serial IO a, Serial IO (f a), Serial IO (a -> a), Serial IO (f (a -> a))
      )
-  => Series IO  (f a) -> TestTree
+  => Series IO (f a) -> TestTree
 testMonoExhaustive fs = testGroup "Applicative"
   [ Functor.testMonoExhaustive fs
   , testProperty "pure id <*> v ≡ v" $ identity fs
