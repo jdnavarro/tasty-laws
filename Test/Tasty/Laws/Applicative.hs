@@ -9,6 +9,7 @@ module Test.Tasty.Laws.Applicative
   ( test
   , testMono
   , testMonoExhaustive
+  , module Test.SmallCheck.Laws.Applicative
   ) where
 
 #if !MIN_VERSION_base(4,8,0)
@@ -28,8 +29,12 @@ import Test.SmallCheck.Laws.Applicative
   , interchange
   , interchangeSum
   )
+
 import qualified Test.Tasty.Laws.Functor as Functor
 
+-- | @tasty@ 'TestTree' for 'Applicative' laws. The type signature forces the
+--   parameter to be '()' which, unless you are dealing with non-total
+--   functions, should be enough to test any 'Applicative's.
 test
   :: ( Applicative f
      , Eq (f ()), Eq (f (f ())), Show (f ()), Show (f (() -> ()))
@@ -39,6 +44,7 @@ test
   => Series IO (f ()) -> TestTree
 test = testMonoExhaustive
 
+-- | @tasty@ 'TestTree' for 'Applicative' laws. Monomorphic sum 'Series'.
 testMono
   :: forall f a .
      ( Applicative f
@@ -47,7 +53,7 @@ testMono
      , Serial Identity a, Serial Identity (f a)
      , Serial IO a, Serial IO (f a), Serial IO (a -> a), Serial IO (f (a -> a))
      )
-  => Series IO  (f a) -> TestTree
+  => Series IO (f a) -> TestTree
 testMono fs = testGroup "Applicative"
   [ Functor.testMono fs
   , testProperty "pure id <*> v ≡ v" $ identity fs
@@ -64,6 +70,7 @@ testMono fs = testGroup "Applicative"
       (series :: Series IO (f (a -> a)))
   ]
 
+-- | @tasty@ 'TestTree' for 'Applicative' laws. Monomorphic product 'Series'.
 testMonoExhaustive
   :: forall f a .
      ( Applicative f

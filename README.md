@@ -3,7 +3,7 @@
 [![Hackage Version](https://img.shields.io/hackage/v/tasty-laws.svg)](https://hackage.haskell.org/package/tasty-laws)
 [![Build Status](https://img.shields.io/travis/jdnavarro/tasty-laws.svg)](https://travis-ci.org/jdnavarro/tasty-laws)
 
-Preassembled `tasty` runners for property testing the following laws:
+Preassembled `tasty` `TestTree`s for property testing the following laws:
 
 - Monoids
 - Functors

@@ -1,7 +1,15 @@
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE ScopedTypeVariables #-}
-module Test.Tasty.Laws.Monad where
+-- | This module is intended to be imported @qualified@, for example:
+--
+-- > import qualified Test.Tasty.Laws.Monad as Monad
+--
+module Test.Tasty.Laws.Monad
+  ( test
+  , testMono
+  , testMonoExhaustive
+  ) where
 
 #if !MIN_VERSION_base(4,8,0)
 import Control.Applicative (Applicative)
@@ -13,6 +21,9 @@ import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.SmallCheck (testProperty)
 import qualified Test.Tasty.Laws.Applicative as Applicative
 
+-- | @tasty@ 'TestTree' for 'Monad' laws. The type signature forces the
+--   parameter to be '()' which, unless you are dealing with non-total
+--   functions, should be enough to test any 'Monad's.
 test
   :: ( Applicative m, Monad m
      , Eq (m ()), Eq (m (m ()))
@@ -23,8 +34,7 @@ test
   => Series IO (m ()) -> TestTree
 test = testMonoExhaustive
 
--- | @tasty@ 'TestTree' for 'Monad' laws. You need to provide the type
---   wrapped in a `Proxy` and make sure 'a' is an instance of 'Serial'.
+-- | @tasty@ 'TestTree' for 'Monad' laws. Monomorphic sum 'Series'.
 testMono
   :: forall m a .
      ( Applicative m, Monad m
@@ -42,8 +52,7 @@ testMono ms = testGroup "Monad laws"
                         (series :: Series IO (a -> m a))
   ]
 
--- | @tasty@ 'TestTree' for 'Monad' laws. You need to provide the type
---   wrapped in a `Proxy` and make sure 'a' is an instance of 'Serial'.
+-- | @tasty@ 'TestTree' for 'Monad' laws. Monomorphic product 'Series'.
 testMonoExhaustive
   :: forall m a .
      ( Applicative m, Monad m
@@ -57,6 +66,6 @@ testMonoExhaustive
 testMonoExhaustive ms = testGroup "Monad laws"
   [ Applicative.testMono ms
   , testProperty "(m >>= f) >>= g ≡ m (f >=> g)"
-  $ associativity ms (series :: Series IO (a -> m a))
-                     (series :: Series IO (a -> m a))
+    $ associativity ms (series :: Series IO (a -> m a))
+                       (series :: Series IO (a -> m a))
   ]

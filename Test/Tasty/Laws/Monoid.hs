@@ -1,7 +1,7 @@
 {-# LANGUAGE CPP #-}
 -- | This module is intended to be imported @qualified@:
 --
--- > import qualified Test.Tasty.Laws as Monoid
+-- > import qualified Test.Tasty.Laws.Monoid as Monoid
 --
 module Test.Tasty.Laws.Monoid
   ( test
