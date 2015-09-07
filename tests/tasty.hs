@@ -90,8 +90,6 @@ applicativeTests = testGroup "Applicative"
       [ Applicative.test (series :: Series IO [()]) ]
     , testGroup "Bool"
       [ Applicative.testMono (series :: Series IO [Bool]) ]
-    -- , testGroup "Char"
-    --   [ Applicative.testMono (series :: Series IO [Char]) ]
     ]
   ]
 
