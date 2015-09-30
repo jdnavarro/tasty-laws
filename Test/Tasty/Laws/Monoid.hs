@@ -7,23 +7,25 @@ module Test.Tasty.Laws.Monoid
   ( test
   , testExhaustive
   , testMConcat
-  , module Test.SmallCheck.Laws.Monoid
+  , module Data.Monoid.Laws
   ) where
 
+import Control.Applicative (liftA3)
 #if !MIN_VERSION_base(4,8,0)
 import Data.Monoid (Monoid)
+#else
+import Prelude hiding (mconcat)
 #endif
 
-import Test.SmallCheck.Series (Series)
-import Test.SmallCheck.Laws.Monoid
+import Test.DumbCheck (Series)
+import Data.Monoid.Laws
   ( leftIdentity
   , rightIdentity
   , associativity
-  , associativitySum
-  , mconcatProp
+  , mconcat
   )
 import Test.Tasty (TestTree, testGroup)
-import Test.Tasty.SmallCheck (testProperty)
+import Test.Tasty.DumbCheck (testSeriesProperty)
 
 -- | @tasty@ 'TestTree' for 'Monoid' laws. Sum of series for associativity law.
 --
@@ -33,16 +35,16 @@ import Test.Tasty.SmallCheck (testProperty)
 -- ('c' <> 'c') <> 'c' == 'c' <> ('c' <> 'c')
 -- ...
 -- @
-test :: (Eq a, Show a, Monoid a) => Series IO a -> TestTree
+test :: (Eq a, Show a, Monoid a) => Series a -> TestTree
 test ms = testGroup "Monoid laws"
-  [ testProperty "mempty <> x ≡ x" $ leftIdentity ms
-  , testProperty "x <> mempty ≡ x" $ rightIdentity ms
-  , testProperty "x <> (y <> z) ≡ (x <> y) <> z"
-        $ associativitySum ms ms ms
+  [ testSeriesProperty "mempty <> x ≡ x" leftIdentity ms
+  , testSeriesProperty "x <> mempty ≡ x" rightIdentity ms
+  , testSeriesProperty "x <> (y <> z) ≡ (x <> y) <> z"
+                       associativity (zip3 ms ms ms)
   ]
 
 -- | @tasty@ 'TestTree' for 'Monoid' laws. Product of series for associativity
---   law. Be aware of combinatorial explosion.
+--   law.
 --
 -- @
 -- ('a' <> 'a') <> 'a' == 'a' <> ('a' <> 'a')
@@ -50,14 +52,14 @@ test ms = testGroup "Monoid laws"
 -- ('a' <> 'b') <> 'b' == 'a' <> ('b' <> 'b')
 -- ...
 -- @
-testExhaustive :: (Eq a, Show a, Monoid a) => Series IO a -> TestTree
+testExhaustive :: (Eq a, Show a, Monoid a) => Series a -> TestTree
 testExhaustive ms = testGroup "Monoid laws"
-  [ testProperty "mempty <> x ≡ x" $ leftIdentity ms
-  , testProperty "x <> mempty ≡ x" $ rightIdentity ms
-  , testProperty "x <> (y <> z) ≡ (x <> y) <> z"
-        $ associativity ms ms ms
+  [ testSeriesProperty "mempty <> x ≡ x" leftIdentity ms
+  , testSeriesProperty "x <> mempty ≡ x" rightIdentity ms
+  , testSeriesProperty "x <> (y <> z) ≡ (x <> y) <> z"
+                       associativity (liftA3 (,,) ms ms ms)
   ]
 
 -- | Use this test when implementing the 'mconcat' method.
-testMConcat :: (Eq a, Show a, Monoid a) => Series IO a -> TestTree
-testMConcat ms = testProperty "mconcat ≡ foldr mappend mempty" $ mconcatProp ms
+testMConcat :: (Eq a, Show a, Monoid a) => Series [a] -> TestTree
+testMConcat ms = testSeriesProperty "mconcat ≡ foldr mappend mempty" mconcat ms

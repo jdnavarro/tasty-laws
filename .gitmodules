@@ -1,0 +1,6 @@
+[submodule "tasty-dumbcheck"]
+	path = tasty-dumbcheck
+	url = https://github.com/jdnavarro/tasty-dumbcheck.git
+[submodule "laws"]
+	path = laws
+	url = https://github.com/jdnavarro/laws.git

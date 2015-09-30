@@ -1,7 +1,6 @@
 flags: {}
 packages:
 - '.'
-extra-deps:
-- smallcheck-laws-0.3
-- smallcheck-series-0.5.1
-resolver: lts-3.4
+- 'laws'
+- 'tasty-dumbcheck'
+resolver: lts-3.7

@@ -6,66 +6,59 @@
 -- > import qualified Test.Tasty.Laws.Monad as Monad
 --
 module Test.Tasty.Laws.Monad
-  ( test
-  , testMono
-  , testMonoExhaustive
+  ( testUnit
+  , test
+  , testExhaustive
   ) where
 
 #if !MIN_VERSION_base(4,8,0)
 import Control.Applicative (Applicative)
 #endif
-import Data.Functor.Identity (Identity)
-import Test.SmallCheck.Series (Series, Serial(series))
-import Test.SmallCheck.Laws.Monad (associativity, associativitySum)
+import Control.Monad.Laws (associativity)
+import Test.DumbCheck (Series, Serial(series), zipA3)
 import Test.Tasty (TestTree, testGroup)
-import Test.Tasty.SmallCheck (testProperty)
+import Test.Tasty.DumbCheck (testSeriesProperty)
 import qualified Test.Tasty.Laws.Applicative as Applicative
 
 -- | @tasty@ 'TestTree' for 'Monad' laws. The type signature forces the
 --   parameter to be '()' which, unless you are dealing with non-total
 --   functions, should be enough to test any 'Monad's.
-test
+testUnit
   :: ( Applicative m, Monad m
-     , Eq (m ()), Eq (m (m ()))
+     , Eq (m ())
      , Show (m ()), Show (m (() -> ()))
-     , Serial Identity (m ())
-     , Serial IO (m ()), Serial IO (m (() -> ()))
+     , Serial (m ()), Serial (m (() -> ()))
      )
-  => Series IO (m ()) -> TestTree
-test = testMonoExhaustive
+    => Series (m ()) -> TestTree
+testUnit = testExhaustive
 
 -- | @tasty@ 'TestTree' for 'Monad' laws. Monomorphic sum 'Series'.
-testMono
+test
   :: forall m a .
      ( Applicative m, Monad m
-     , Eq a, Eq (m a), Eq (m (m a))
+     , Eq a, Eq (m a)
      , Show a, Show (m a), Show (m (a -> a))
-     , Serial Identity a, Serial Identity (m a)
-     , Serial IO a, Serial IO (a -> a)
-     , Serial IO (m a) ,Serial IO (m (a -> a)), Serial IO (a -> m a)
+     , Serial a, Serial (m a), Serial (m (a -> a))
      )
-  => Series IO (m a) -> TestTree
-testMono ms = testGroup "Monad laws"
-  [ Applicative.testMono ms
-  , testProperty "(m >>= f) >>= g ≡ m (f >=> g)"
-  $ associativitySum ms (series :: Series IO (a -> m a))
-                        (series :: Series IO (a -> m a))
+  => Series (m a) -> TestTree
+test ms = testGroup "Monad laws"
+  [ Applicative.test ms
+  , testSeriesProperty "(m >>= f) >>= g ≡ m (f >=> g)" associativity
+    $ zip3 ms (series :: Series (a -> m a)) (series :: Series (a -> m a))
   ]
 
 -- | @tasty@ 'TestTree' for 'Monad' laws. Monomorphic product 'Series'.
-testMonoExhaustive
+testExhaustive
   :: forall m a .
      ( Applicative m, Monad m
-     , Eq a, Eq (m a), Eq (m (m a))
+     , Eq a, Eq (m a)
      , Show a, Show (m a), Show (m (a -> a))
-     , Serial Identity a, Serial Identity (m a)
-     , Serial IO a, Serial IO (a -> a)
-     , Serial IO (m a) ,Serial IO (m (a -> a)), Serial IO (a -> m a)
+     , Serial a, Serial (m a), Serial (m (a -> a))
      )
-  => Series IO (m a) -> TestTree
-testMonoExhaustive ms = testGroup "Monad laws"
-  [ Applicative.testMono ms
-  , testProperty "(m >>= f) >>= g ≡ m (f >=> g)"
-    $ associativity ms (series :: Series IO (a -> m a))
-                       (series :: Series IO (a -> m a))
+  => Series (m a) -> TestTree
+testExhaustive ms = testGroup "Monad laws"
+  [ Applicative.testExhaustive ms
+  , testSeriesProperty "(m >>= f) >>= g ≡ m (f >=> g)"
+    associativity $ zipA3 ms (series :: Series (a -> m a))
+                             (series :: Series (a -> m a))
   ]

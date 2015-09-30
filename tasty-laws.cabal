@@ -27,14 +27,9 @@ library
                        Test.Tasty.Laws.Monad,
                        Test.Tasty.Laws.Monoid
   build-depends:       base >=4.6 && <4.9,
-                       smallcheck >=1.1.1,
-                       smallcheck-laws >=0.3,
-                       smallcheck-series >=0.3,
+                       laws,
                        tasty >=0.10,
-                       tasty-smallcheck >=0.8.0.1
-  if impl(ghc < 7.10)
-     build-depends: transformers >=0.3.0.0
-
+                       tasty-dumbcheck
   if impl(ghc < 7.8)
      build-depends: tagged >=0.7.2
 
@@ -45,9 +40,8 @@ test-suite tasty
   main-is:             tasty.hs
   ghc-options:         -Wall -threaded
   build-depends:       base >=4.6 && <4.9,
-                       smallcheck >=1.1.1,
                        tasty >=0.10,
-                       smallcheck-laws >=0.3,
+                       tasty-dumbcheck,
                        tasty-laws
 
   if impl(ghc < 7.8)
