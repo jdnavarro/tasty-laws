@@ -10,14 +10,13 @@ module Test.Tasty.Laws.Monoid
   , module Data.Monoid.Laws
   ) where
 
-import Control.Applicative (liftA3)
 #if !MIN_VERSION_base(4,8,0)
 import Data.Monoid (Monoid)
 #else
 import Prelude hiding (mconcat)
 #endif
 
-import Test.DumbCheck (Series)
+import Test.DumbCheck (Series, uncurry3, zipA3)
 import Data.Monoid.Laws
   ( leftIdentity
   , rightIdentity
@@ -40,7 +39,8 @@ test ms = testGroup "Monoid laws"
   [ testSeriesProperty "mempty <> x ≡ x" leftIdentity ms
   , testSeriesProperty "x <> mempty ≡ x" rightIdentity ms
   , testSeriesProperty "x <> (y <> z) ≡ (x <> y) <> z"
-                       associativity (zip3 ms ms ms)
+                       (uncurry3 associativity)
+                       (zip3 ms ms ms)
   ]
 
 -- | @tasty@ 'TestTree' for 'Monoid' laws. Product of series for associativity
@@ -57,7 +57,8 @@ testExhaustive ms = testGroup "Monoid laws"
   [ testSeriesProperty "mempty <> x ≡ x" leftIdentity ms
   , testSeriesProperty "x <> mempty ≡ x" rightIdentity ms
   , testSeriesProperty "x <> (y <> z) ≡ (x <> y) <> z"
-                       associativity (liftA3 (,,) ms ms ms)
+                       (uncurry3 associativity)
+                       (zipA3 ms ms ms)
   ]
 
 -- | Use this test when implementing the 'mconcat' method.

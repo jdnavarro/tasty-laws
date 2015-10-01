@@ -17,7 +17,7 @@ import Control.Applicative (Applicative)
 #endif
 import Data.Proxy (Proxy(..))
 import Test.Tasty (TestTree, testGroup)
-import Test.DumbCheck (zipA2, zipA3)
+import Test.DumbCheck (uncurry3, zipA2, zipA3)
 import Test.Tasty.DumbCheck (Serial(series), Series, testSeriesProperty)
 import Control.Applicative.Laws
   ( identity
@@ -58,17 +58,23 @@ test
 test fs = testGroup "Applicative"
   [ Functor.test fs
   , testSeriesProperty "pure id <*> v ≡ v" identity fs
-  , testSeriesProperty "(.) <$> u <*> v <*> w ≡  u <*> (v <*> w)" composition $ zip3
-      (series :: Series (f (a -> a)))
-      (series :: Series (f a))
-      (series :: Series (f (a -> a)))
-  , testSeriesProperty "pure f <*> pure x ≡ pure (f x)" homomorphism $ zip3
-      (repeat (Proxy  :: Proxy f))
-      (series :: Series a)
-      (series :: Series (a -> a))
-  , testSeriesProperty "u <*> pure y ≡ pure ($ y) <*> u" interchange $ zip
-      (series :: Series a)
-      (series :: Series (f (a -> a)))
+  , testSeriesProperty
+      "(.) <$> u <*> v <*> w ≡  u <*> (v <*> w)"
+      (uncurry3 composition)
+      $ zip3 (series :: Series (f (a -> a)))
+             (series :: Series (f a))
+             (series :: Series (f (a -> a)))
+  , testSeriesProperty
+      "pure f <*> pure x ≡ pure (f x)"
+      (uncurry3 homomorphism)
+      $ zip3 (repeat (Proxy  :: Proxy f))
+             (series :: Series a)
+             (series :: Series (a -> a))
+  , testSeriesProperty
+      "u <*> pure y ≡ pure ($ y) <*> u"
+      (uncurry interchange)
+      $ zip (series :: Series a)
+            (series :: Series (f (a -> a)))
   ]
 
 testExhaustive
@@ -82,15 +88,20 @@ testExhaustive
 testExhaustive fs = testGroup "Applicative"
   [ Functor.testExhaustive fs
   , testSeriesProperty "pure id <*> v ≡ v" identity fs
-  , testSeriesProperty "(.) <$> u <*> v <*> w ≡  u <*> (v <*> w)" composition $ zipA3
-      (series :: Series (f (a -> a)))
-      (series :: Series (f a))
-      (series :: Series (f (a -> a)))
-  , testSeriesProperty "pure f <*> pure x ≡ pure (f x)" homomorphism $ zipA3
-      (repeat (Proxy  :: Proxy f))
-      (series :: Series a)
-      (series :: Series (a -> a))
-  , testSeriesProperty "u <*> pure y ≡ pure ($ y) <*> u" interchange $ zipA2
-      (series :: Series a)
-      (series :: Series (f (a -> a)))
+  , testSeriesProperty
+      "(.) <$> u <*> v <*> w ≡  u <*> (v <*> w)"
+      (uncurry3 composition)
+      $ zipA3 (series :: Series (f (a -> a)))
+              (series :: Series (f a))
+              (series :: Series (f (a -> a)))
+  , testSeriesProperty
+      "pure f <*> pure x ≡ pure (f x)" (uncurry3 homomorphism)
+      $ zipA3 (repeat (Proxy  :: Proxy f))
+              (series :: Series a)
+              (series :: Series (a -> a))
+  , testSeriesProperty
+      "u <*> pure y ≡ pure ($ y) <*> u"
+      (uncurry interchange)
+      $ zipA2 (series :: Series a)
+              (series :: Series (f (a -> a)))
   ]

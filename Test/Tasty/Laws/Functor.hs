@@ -17,7 +17,7 @@ module Test.Tasty.Laws.Functor
 #if !MIN_VERSION_base(4,8,0)
 import Control.Applicative ((<$>))
 #endif
-import Test.DumbCheck (Serial(series), Series, zipA3)
+import Test.DumbCheck (Serial(series), Series, uncurry3, zipA3)
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.DumbCheck (testSeriesProperty)
 import Data.Functor.Laws (identity, composition)
@@ -113,5 +113,5 @@ testSeries1
   => Series (f c, a -> b, c -> a) -> TestTree
 testSeries1 ss = testGroup "Functor laws"
   [ testSeriesProperty "fmap id ≡ id" identity ((\(x,_,_) -> x) <$> ss)
-  , testSeriesProperty "fmap (f . g) ≡ fmap f . fmap g" composition ss
+  , testSeriesProperty "fmap (f . g) ≡ fmap f . fmap g" (uncurry3 composition) ss
   ]

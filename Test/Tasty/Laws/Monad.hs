@@ -15,7 +15,7 @@ module Test.Tasty.Laws.Monad
 import Control.Applicative (Applicative)
 #endif
 import Control.Monad.Laws (associativity)
-import Test.DumbCheck (Series, Serial(series), zipA3)
+import Test.DumbCheck (Series, Serial(series), uncurry3, zipA3)
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.DumbCheck (testSeriesProperty)
 import qualified Test.Tasty.Laws.Applicative as Applicative
@@ -43,8 +43,12 @@ test
   => Series (m a) -> TestTree
 test ms = testGroup "Monad laws"
   [ Applicative.test ms
-  , testSeriesProperty "(m >>= f) >>= g ≡ m (f >=> g)" associativity
-    $ zip3 ms (series :: Series (a -> m a)) (series :: Series (a -> m a))
+  , testSeriesProperty
+      "(m >>= f) >>= g ≡ m (f >=> g)"
+      (uncurry3 associativity)
+      $ zip3 ms
+             (series :: Series (a -> m a))
+             (series :: Series (a -> m a))
   ]
 
 -- | @tasty@ 'TestTree' for 'Monad' laws. Monomorphic product 'Series'.
@@ -58,7 +62,10 @@ testExhaustive
   => Series (m a) -> TestTree
 testExhaustive ms = testGroup "Monad laws"
   [ Applicative.testExhaustive ms
-  , testSeriesProperty "(m >>= f) >>= g ≡ m (f >=> g)"
-    associativity $ zipA3 ms (series :: Series (a -> m a))
-                             (series :: Series (a -> m a))
+  , testSeriesProperty
+      "(m >>= f) >>= g ≡ m (f >=> g)"
+      (uncurry3 associativity)
+      $ zipA3 ms
+              (series :: Series (a -> m a))
+              (series :: Series (a -> m a))
   ]
