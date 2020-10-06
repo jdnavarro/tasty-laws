@@ -1,0 +1,10 @@
+resolver: lts-14.27
+
+packages:
+- '.'
+- 'laws'
+- 'tasty-dumbcheck'
+
+extra-deps: []
+
+flags: {}
