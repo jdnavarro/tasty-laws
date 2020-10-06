@@ -27,7 +27,7 @@ library
                        Test.Tasty.Laws.Functor,
                        Test.Tasty.Laws.Monad,
                        Test.Tasty.Laws.Monoid
-  build-depends:       base >=4.6 && <4.9,
+  build-depends:       base >=4.6 && <4.14,
                        laws,
                        tasty >=0.10,
                        tasty-dumbcheck
@@ -40,7 +40,7 @@ test-suite tasty
   hs-source-dirs:      tests
   main-is:             tasty.hs
   ghc-options:         -Wall -threaded
-  build-depends:       base >=4.6 && <4.9,
+  build-depends:       base >=4.6 && <4.14,
                        tasty >=0.10,
                        tasty-dumbcheck,
                        tasty-laws
