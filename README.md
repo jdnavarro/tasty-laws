@@ -2,6 +2,7 @@
 
 [![Hackage Version](https://img.shields.io/hackage/v/tasty-laws.svg)](https://hackage.haskell.org/package/tasty-laws)
 [![Build Status](https://img.shields.io/travis/jdnavarro/tasty-laws.svg)](https://travis-ci.org/jdnavarro/tasty-laws)
+[![Build status](https://github.com/jdnavarro/tasty-laws/actions/workflows/ci.yml/badge.svg)](https://github.com/jdnavarro/tasty-laws/actions/workflows/ci.yml)
 
 Preassembled `tasty` `TestTree`s for property testing the following laws:
 
