@@ -1,0 +1,11 @@
+packages: tasty-laws.cabal
+
+source-repository-package
+  type: git
+  location: git://github.com/jdnavarro/tasty-dumbcheck.git
+  tag: 6a29ac719df0e11e09b11d29c72cac1b9c53c076
+
+source-repository-package
+  type: git
+  location: git://github.com/jdnavarro/laws.git
+  tag: c7945392ccf845c4f45fbd07847d5013c04e38bb
